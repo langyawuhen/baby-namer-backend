@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: fastAPI
+    env: python
+    region: oregon  # 部署区域（oregon/frankfurt/singapore）
+    plan: free      # 免费计划
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    branch: master    # Git分支
