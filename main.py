@@ -1,3 +1,11 @@
+import sys
+from pathlib import Path
+
+# 将 main.py 所在目录（项目根）加入 Python 路径，避免 Railway/Docker 等环境下找不到 routes
+_root = Path(__file__).resolve().parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
+
 from fastapi import FastAPI
 from routes.user import router as user_router
 from routes.article import router as article_router
