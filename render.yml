@@ -7,3 +7,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port 8080
     branch: main
+    # 若用「原生 Python」部署（非 Docker），需让 Python 找到 routes 等包
+    envVars:
+      - key: PYTHONPATH
+        value: .

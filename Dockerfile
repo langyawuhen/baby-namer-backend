@@ -10,12 +10,15 @@ FROM python:3.13-slim
 
 WORKDIR /code
 COPY --from=builder /root/.local /root/.local
-# 复制应用代码（.dockerignore 已排除无关文件）
-COPY . .
+
+# 显式复制应用代码，避免漏拷或 .dockerignore 误伤
+COPY main.py dependence.py ./
+COPY config/ core/ models/ repository/ routes/ schemas/ ./
+COPY alembic/ alembic.ini ./
 
 ENV PATH=/root/.local/bin:$PATH
-# 让 Python 能正确解析 routes、config、core 等包（必须）
 ENV PYTHONPATH=/code
 
 EXPOSE 8080
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+# 在启动命令里再次设置 PYTHONPATH，防止被部署平台覆盖
+CMD ["/bin/sh", "-c", "PYTHONPATH=/code exec uvicorn main:app --host 0.0.0.0 --port 8080"]
