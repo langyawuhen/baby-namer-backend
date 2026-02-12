@@ -6,7 +6,10 @@ COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./main.py /code/
+# 复制整个项目代码（main.py 依赖 routes、models、config、core 等模块）
+COPY . /code/
 
-CMD ["fastapi","run","main.py","--host=0.0.0.0","--port=8000"]
+WORKDIR /code
+
+CMD ["fastapi", "run", "main.py", "--host=0.0.0.0", "--port=8000"]
 
